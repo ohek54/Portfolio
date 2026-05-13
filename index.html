@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Owen Hektner — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAFAF7;
+    --ink: #0A0A0A;
+    --ink-2: #2A2A2A;
+    --mute: #6B6B68;
+    --rule: #E5E3DC;
+    --accent: #D4541C;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; font-size: 16px; line-height: 1.5; }
+  body { overflow-x: hidden; }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .upper { text-transform: uppercase; letter-spacing: 0.08em; }
+  .display { font-family: 'Inter Tight', sans-serif; letter-spacing: -0.03em; font-weight: 700; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Top ruler bar */
+  .ruler {
+    position: sticky; top: 0; z-index: 50; background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+  }
+  .ruler-inner {
+    max-width: 1440px; margin: 0 auto; padding: 14px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .wordmark { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: -0.01em; }
+  .wordmark::before { content: '◼ '; color: var(--accent); }
+  .nav { display: flex; gap: 28px; font-size: 12px; letter-spacing: 0.04em; }
+  .nav a { color: var(--ink-2); padding: 4px 0; border-bottom: 1px solid transparent; transition: border 0.15s; }
+  .nav a:hover { border-bottom-color: var(--accent); color: var(--ink); }
+  .nav .idx { color: var(--mute); margin-right: 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+
+  .page { max-width: 1440px; margin: 0 auto; padding: 0 40px; position: relative; }
+
+  /* Hero */
+  .hero { padding: 72px 0 64px; position: relative; }
+  .hero-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px;
+  }
+  .hero-meta { grid-column: 1 / 5; display: flex; flex-direction: column; gap: 32px; }
+  .meta-rows { display: flex; flex-direction: column; gap: 12px; }
+  .meta-row { display: flex; gap: 14px; font-size: 12px; align-items: baseline; line-height: 1.45; }
+  .meta-label { color: var(--mute); width: 90px; flex-shrink: 0; font-size: 10px; }
+  .meta-val { color: var(--ink); font-weight: 500; }
+  .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--ink); color: var(--paper); font-size: 11px; align-self: flex-start; font-family: 'JetBrains Mono', monospace; }
+  .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+  .hero-title { grid-column: 5 / 13; display: flex; flex-direction: column; gap: 24px; }
+  .h1 {
+    font-family: 'Inter Tight', sans-serif; font-weight: 800; letter-spacing: -0.045em;
+    font-size: clamp(72px, 9.5vw, 132px); line-height: 0.92; color: var(--ink);
+  }
+  .h1 .accent-mark { color: var(--accent); }
+  .subline { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.01em; color: var(--ink-2); max-width: 640px; line-height: 1.35; }
+  .subline em { color: var(--accent); font-style: normal; }
+
+  /* Data strip */
+  .data-strip {
+    margin-top: 56px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+    display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 0;
+  }
+  .data-cell { padding: 20px 24px; border-right: 1px solid var(--rule); }
+  .data-cell:last-child { border-right: none; }
+  .data-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .data-val { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 32px; letter-spacing: -0.025em; color: var(--ink); }
+  .data-val.text { font-size: 22px; letter-spacing: -0.02em; }
+  .data-val .unit { color: var(--mute); font-weight: 400; font-size: 13px; margin-left: 2px; }
+
+  /* CTA row */
+  .cta-row { margin-top: 36px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: var(--ink); color: var(--paper); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+  .btn .arrow { font-size: 15px; transition: transform 0.15s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  .social-row { display: flex; gap: 16px; margin-left: 12px; padding-left: 18px; border-left: 1px solid var(--rule); }
+  .social-row a { font-size: 11px; color: var(--mute); padding: 4px 0; border-bottom: 1px solid transparent; }
+  .social-row a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+
+  /* Section header */
+  .section { padding: 96px 0; border-top: 1px solid var(--ink); }
+  .section-head {
+    display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px;
+    margin-bottom: 64px; align-items: end;
+  }
+  .section-num { grid-column: 1 / 3; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.08em; }
+  .section-title { grid-column: 3 / 13; font-family: 'Inter Tight', sans-serif; font-weight: 700; letter-spacing: -0.03em; font-size: 56px; line-height: 1; }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px; }
+  .about-portrait { grid-column: 1 / 5; }
+  .portrait-frame {
+    background: radial-gradient(circle at center, #2F2F2F 0%, #1A1A1A 70%);
+    aspect-ratio: 1/1;
+    position: relative; overflow: hidden;
+    border-radius: 50%;
+  }
+  .portrait-img {
+    position: absolute; inset: 0; z-index: 1;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%;
+  }
+
+  .about-text { grid-column: 6 / 13; display: flex; flex-direction: column; gap: 22px; }
+  .about-text p { font-size: 18px; line-height: 1.55; color: var(--ink-2); }
+  .about-text p:first-of-type { font-size: 22px; line-height: 1.45; color: var(--ink); font-weight: 400; }
+
+  /* Skills matrix */
+  .skills-matrix {
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  }
+  .skill-row {
+    display: grid; grid-template-columns: 200px 1fr; column-gap: 16px;
+    padding: 28px 0; border-bottom: 1px solid var(--rule);
+    align-items: start;
+  }
+  .skill-row:last-child { border-bottom: none; }
+  .skill-cat { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); letter-spacing: 0.08em; padding-top: 4px; }
+  .skill-cat .num { color: var(--accent); margin-right: 6px; }
+  .skill-list { display: flex; flex-wrap: wrap; gap: 0; }
+  .skill-item { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 18px; letter-spacing: -0.01em; padding: 4px 14px 4px 0; color: var(--ink); }
+  .skill-item:not(:last-child)::after { content: '·'; color: var(--mute); margin-left: 14px; }
+
+  /* Projects */
+  .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; row-gap: 56px; }
+  .project { grid-column: span 4; }
+  .proj-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); margin-bottom: 12px; letter-spacing: 0.08em; }
+  .proj-num .accent { color: var(--accent); }
+  .proj-thumb {
+    background: linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%);
+    aspect-ratio: 16/10;
+    margin-bottom: 20px; position: relative; overflow: hidden;
+    border: 1px solid var(--ink);
+  }
+  .proj-thumb-img {
+    position: absolute; inset: 0; z-index: 1;
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .project:hover .proj-thumb-img { transform: scale(1.03); }
+  .proj-thumb-overlay {
+    position: absolute; inset: 0; z-index: 2; padding: 16px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: rgba(255,255,255,0.95);
+    pointer-events: none;
+  }
+  .proj-thumb-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,0.95); letter-spacing: 0.1em;
+    align-self: flex-start;
+    background: rgba(0,0,0,0.55); padding: 4px 8px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .proj-thumb-fallback { display: none; }
+  .proj-thumb.no-media .proj-thumb-fallback { display: block; }
+  .proj-thumb.no-media .proj-thumb-tag { background: transparent; backdrop-filter: none; padding: 0; color: rgba(255,255,255,0.5); }
+  .proj-thumb-title {
+    font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 22px;
+    letter-spacing: -0.02em; line-height: 1.05; color: rgba(255,255,255,0.95);
+  }
+  .proj-title { font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 22px; letter-spacing: -0.025em; margin-bottom: 12px; line-height: 1.15; }
+  .proj-desc { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin-bottom: 18px; }
+  .proj-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--rule); flex-wrap: wrap; gap: 8px; }
+  .proj-tags { display: flex; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute); letter-spacing: 0.08em; flex-wrap: wrap; }
+  .proj-link { font-size: 12px; color: var(--ink); border-bottom: 1px solid var(--accent); padding-bottom: 2px; white-space: nowrap; }
+
+  /* Education */
+  .edu-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px; row-gap: 32px; }
+  .edu-card { grid-column: 1 / 8; border-top: 1px solid var(--ink); padding-top: 24px; }
+  .certs-stack { grid-column: 9 / 13; display: flex; flex-direction: column; gap: 20px; }
+  .cert-card { border-top: 1px solid var(--ink); padding-top: 20px; }
+  .edu-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--mute); letter-spacing: 0.08em; margin-bottom: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .edu-meta .gpa { color: var(--accent); }
+  .edu-title { font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+  .edu-sub { color: var(--ink-2); font-size: 16px; margin-bottom: 8px; }
+  .edu-honors { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 14px; color: var(--accent); letter-spacing: 0.02em; margin-bottom: 16px; }
+  .edu-honors::before { content: '— '; }
+  .edu-courses { font-size: 13px; color: var(--mute); line-height: 1.55; }
+  .edu-courses strong { color: var(--ink); font-weight: 500; }
+  .cert-title { font-family: 'Inter Tight', sans-serif; font-weight: 600; font-size: 20px; letter-spacing: -0.015em; line-height: 1.15; margin-bottom: 6px; }
+  .cert-sub { color: var(--ink-2); font-size: 13px; line-height: 1.4; }
+  .cert-link { display: inline-block; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.08em; padding-bottom: 1px; border-bottom: 1px solid var(--accent); }
+
+  /* Contact */
+  .contact-block { padding: 96px 0; border-top: 1px solid var(--ink); }
+  .contact-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px; }
+  .contact-lead { grid-column: 1 / 7; }
+  .contact-lead h2 { font-family: 'Inter Tight', sans-serif; font-weight: 700; letter-spacing: -0.035em; font-size: 72px; line-height: 0.95; margin-bottom: 24px; }
+  .contact-lead h2 em { color: var(--accent); font-style: normal; }
+  .contact-lead p { font-size: 18px; line-height: 1.5; color: var(--ink-2); max-width: 480px; }
+  .contact-info { grid-column: 8 / 13; padding-top: 16px; }
+  .contact-row { display: grid; grid-template-columns: 100px 1fr; padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: center; gap: 8px; }
+  .contact-row .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--mute); letter-spacing: 0.1em; }
+  .contact-row .val { font-family: 'Inter Tight', sans-serif; font-weight: 500; font-size: 17px; color: var(--ink); word-break: break-all; }
+  .contact-row a.val:hover { color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1), transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  .data-strip .data-cell.reveal:nth-child(2) { transition-delay: 80ms; }
+  .data-strip .data-cell.reveal:nth-child(3) { transition-delay: 160ms; }
+  .data-strip .data-cell.reveal:nth-child(4) { transition-delay: 240ms; }
+  .skills-matrix .skill-row.reveal:nth-child(2) { transition-delay: 100ms; }
+  .skills-matrix .skill-row.reveal:nth-child(3) { transition-delay: 200ms; }
+  .projects-grid .project.reveal:nth-child(2) { transition-delay: 120ms; }
+  .projects-grid .project.reveal:nth-child(3) { transition-delay: 240ms; }
+  .certs-stack .cert-card.reveal:nth-child(2) { transition-delay: 120ms; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.is-visible {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="ruler">
+    <div class="ruler-inner">
+      <div class="wordmark">Owen Hektner</div>
+      <nav class="nav">
+        <a href="#about"><span class="idx">01</span>About</a>
+        <a href="#skills"><span class="idx">02</span>Skills</a>
+        <a href="#work"><span class="idx">03</span>Work</a>
+        <a href="#education"><span class="idx">04</span>Education</a>
+        <a href="#contact"><span class="idx">05</span>Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-meta">
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>CURRENTLY · OPERATIONS INTERN @ TITAN MACHINERY</span>
+          </div>
+          <div class="meta-rows">
+            <div class="meta-row"><span class="meta-label upper mono">Role</span><span class="meta-val">Business Intelligence · Data Analytics</span></div>
+            <div class="meta-row"><span class="meta-label upper mono">Based</span><span class="meta-val">North Dakota, USA</span></div>
+            <div class="meta-row"><span class="meta-label upper mono">Stack</span><span class="meta-val">Power BI · DAX · PostgreSQL · Claude Code · Excel</span></div>
+            <div class="meta-row"><span class="meta-label upper mono">Honors</span><span class="meta-val">Magna Cum Laude · College Fellow, IT Dept.</span></div>
+            <div class="meta-row"><span class="meta-label upper mono">Open to</span><span class="meta-val">Full-time roles</span></div>
+          </div>
+        </div>
+
+        <div class="hero-title">
+          <h1 class="h1">Owen<br>Hektner<span class="accent-mark">.</span></h1>
+          <p class="subline">Recent University of Jamestown graduate turning <em>messy operational data</em> into dashboards people actually use.</p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" href="media/Owen_Hektner_Resume.pdf" download="Owen_Hektner_Resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume <span class="arrow">↓</span></a>
+            <a class="btn btn-ghost" href="#work">View Projects <span class="arrow">→</span></a>
+            <div class="social-row">
+              <a href="https://github.com/ohek54">GitHub ↗</a>
+              <a href="https://www.linkedin.com/in/owen-hektner-103ab41a9/">LinkedIn ↗</a>
+              <a href="mailto:omhektner@gmail.com">Email ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data strip -->
+      <div class="data-strip">
+        <div class="data-cell reveal">
+          <div class="data-label">Cumulative GPA</div>
+          <div class="data-val">3.86<span class="unit">/4.0</span></div>
+        </div>
+        <div class="data-cell reveal">
+          <div class="data-label">Honors</div>
+          <div class="data-val text">Magna Cum Laude</div>
+        </div>
+        <div class="data-cell reveal">
+          <div class="data-label">Dashboards Built</div>
+          <div class="data-val">03<span class="unit">major</span></div>
+        </div>
+        <div class="data-cell reveal">
+          <div class="data-label">Certifications</div>
+          <div class="data-val">02</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="section-head reveal">
+        <div class="section-num">01 — ABOUT</div>
+        <h2 class="section-title">A short read on how I work.</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-portrait reveal">
+          <div class="portrait-frame">
+            <img src="media/portrait.jpg" alt="Owen Hektner" class="portrait-img"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p>I recently graduated from the University of Jamestown, where I double-majored in Information Technology and Business Management — finishing magna cum laude and as a College Fellow in the IT Department. I'm currently an Operations Intern at Titan Machinery, working with real operational data day-to-day.</p>
+          <p>I like the part of analytics that sits between technical work and business judgment — building dashboards, querying databases, and figuring out what a stakeholder is actually asking when they ask a question. Recently I've been working with healthcare and retail data.</p>
+          <p>Playing college basketball was the single best thing I did for my discipline and ability to operate inside a team. Outside of work, I hike, hunt, fish, and read when I can.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <div class="section-head reveal">
+        <div class="section-num">02 — SKILLS</div>
+        <h2 class="section-title">What I bring to a team.</h2>
+      </div>
+      <div class="skills-matrix">
+        <div class="skill-row reveal">
+          <div class="skill-cat"><span class="num">001</span>Analysis &amp; Visualization</div>
+          <div class="skill-list">
+            <span class="skill-item">Data Collection</span>
+            <span class="skill-item">Data Cleaning</span>
+            <span class="skill-item">Data Validation</span>
+            <span class="skill-item">Statistical Analysis</span>
+            <span class="skill-item">Ad-Hoc Analysis</span>
+            <span class="skill-item">Dashboard Design</span>
+            <span class="skill-item">KPI Development</span>
+            <span class="skill-item">Trend Analysis</span>
+          </div>
+        </div>
+        <div class="skill-row reveal">
+          <div class="skill-cat"><span class="num">002</span>Software &amp; AI Tools</div>
+          <div class="skill-list">
+            <span class="skill-item">Power BI (DAX)</span>
+            <span class="skill-item">PostgreSQL</span>
+            <span class="skill-item">Microsoft Office Suite</span>
+            <span class="skill-item">Claude Code</span>
+            <span class="skill-item">Prompt Engineering</span>
+            <span class="skill-item">Generative AI</span>
+            <span class="skill-item">LLMs</span>
+            <span class="skill-item">Data Summarization</span>
+          </div>
+        </div>
+        <div class="skill-row reveal">
+          <div class="skill-cat"><span class="num">003</span>Business Intelligence</div>
+          <div class="skill-list">
+            <span class="skill-item">ETL Processes</span>
+            <span class="skill-item">Data Modeling</span>
+            <span class="skill-item">Performance Metrics</span>
+            <span class="skill-item">Predictive Analytics</span>
+            <span class="skill-item">Business Process Analysis</span>
+            <span class="skill-item">Process Improvement</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="work">
+      <div class="section-head reveal">
+        <div class="section-num">03 — SELECTED WORK</div>
+        <h2 class="section-title">Recent dashboards.</h2>
+      </div>
+      <div class="projects-grid">
+        <article class="project reveal">
+          <div class="proj-num"><span class="accent">03.01</span> · CASE STUDY</div>
+          <div class="proj-thumb">
+            <img src="media/healthcare-1.png" alt="Healthcare Analytics Dashboard" class="proj-thumb-img"
+                 onerror="this.style.display='none'; this.parentElement.classList.add('no-media')">
+            <div class="proj-thumb-overlay">
+              <div class="proj-thumb-tag">HEALTHCARE · POWER BI</div>
+              <div class="proj-thumb-fallback">
+                <div class="proj-thumb-title">Hospital Ops &amp;<br>Patient Analytics</div>
+              </div>
+            </div>
+          </div>
+          <h3 class="proj-title">Healthcare Analytics Dashboard</h3>
+          <p class="proj-desc">An interactive dashboard built on synthetic hospital financial and patient data — surfaces actionable insights for healthcare management and performance review.</p>
+          <div class="proj-meta">
+            <div class="proj-tags"><span>POWER BI</span><span>EXCEL</span><span>HEALTHCARE</span></div>
+            <a class="proj-link" href="#" data-lightbox="media/healthcare-1.png,media/healthcare-2.png" data-lightbox-title="Healthcare Analytics Dashboard">View ↗</a>
+          </div>
+        </article>
+
+        <article class="project reveal">
+          <div class="proj-num"><span class="accent">03.02</span> · CASE STUDY</div>
+          <div class="proj-thumb" style="background: linear-gradient(135deg, #2F2F2F 0%, #0A0A0A 100%);">
+            <img src="media/liquor-1.png" alt="Liquor Store Sales Dashboard" class="proj-thumb-img"
+                 onerror="this.style.display='none'; this.parentElement.classList.add('no-media')">
+            <div class="proj-thumb-overlay">
+              <div class="proj-thumb-tag">RETAIL · DAX · NCR</div>
+              <div class="proj-thumb-fallback">
+                <div class="proj-thumb-title">Liquor Store<br>Sales Analysis</div>
+              </div>
+            </div>
+          </div>
+          <h3 class="proj-title">Liquor Store Sales Analysis</h3>
+          <p class="proj-desc">An interactive Power BI dashboard analyzing sales with advanced DAX measures and drill-through — highlighting key insights from NCR Counterpoint POS data.</p>
+          <div class="proj-meta">
+            <div class="proj-tags"><span>POWER BI</span><span>DAX</span><span>RETAIL</span></div>
+            <a class="proj-link" href="#" data-lightbox="media/liquor-1.png,media/liquor-2.png,media/liquor-3.png" data-lightbox-title="Liquor Store Sales Analysis Dashboard">View ↗</a>
+          </div>
+        </article>
+
+        <article class="project reveal">
+          <div class="proj-num"><span class="accent">03.03</span> · CAPSTONE</div>
+          <div class="proj-thumb" style="background: linear-gradient(135deg, #2A1810 0%, #0A0A0A 100%);">
+            <img src="media/nba-1.png" alt="NBA Player Efficiency Dashboard" class="proj-thumb-img"
+                 onerror="this.style.display='none'; this.parentElement.classList.add('no-media')">
+            <div class="proj-thumb-overlay">
+              <div class="proj-thumb-tag">SPORTS · POWER BI · PYTHON</div>
+              <div class="proj-thumb-fallback">
+                <div class="proj-thumb-title">NBA Player<br>Efficiency Analysis</div>
+              </div>
+            </div>
+          </div>
+          <h3 class="proj-title">NBA Player Efficiency Analysis</h3>
+          <p class="proj-desc">Senior capstone dashboard analyzing NBA player efficiency end-to-end — pulled data via <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px;">nba_api</span> with Python (pandas), cleaned in Power Query, and modeled advanced efficiency metrics across players and seasons in Power BI.</p>
+          <div class="proj-meta">
+            <div class="proj-tags"><span>POWER BI</span><span>PYTHON</span><span>NBA</span></div>
+            <a class="proj-link" href="#" data-lightbox="media/nba-1.png,media/nba-2.png" data-lightbox-title="NBA Player Efficiency Analysis Dashboard">View ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section" id="education">
+      <div class="section-head reveal">
+        <div class="section-num">04 — EDUCATION</div>
+        <h2 class="section-title">Background.</h2>
+      </div>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div class="edu-meta">
+            <span>2021 — 2026</span>
+            <span class="gpa">GPA · 3.86 / 4.0</span>
+          </div>
+          <h3 class="edu-title">University of Jamestown</h3>
+          <p class="edu-sub">B.A. Information Technology &amp; Business Management</p>
+          <p class="edu-honors">Magna Cum Laude · College Fellow, IT Department</p>
+          <p class="edu-courses"><strong>Relevant coursework:</strong> Data Analytics · Database Management · Systems Analysis · Business Intelligence</p>
+        </div>
+        <div class="certs-stack">
+          <div class="cert-card reveal">
+            <div class="edu-meta">
+              <span>CERTIFICATION</span>
+              <span class="gpa">PL-300</span>
+            </div>
+            <h3 class="cert-title">Microsoft Certified: Power BI Data Analyst Associate</h3>
+            <p class="cert-sub">PL-300 · Microsoft</p>
+            <a class="cert-link" href="#" data-lightbox-title="Microsoft PL-300 Certification">View ↗</a>
+          </div>
+          <div class="cert-card reveal">
+            <div class="edu-meta">
+              <span>CERTIFICATION</span>
+              <span class="gpa">IBM</span>
+            </div>
+            <h3 class="cert-title">Information Technology Fundamentals</h3>
+            <p class="cert-sub">Issued March 2026 · IBM</p>
+            <a class="cert-link" href="https://www.credly.com/badges/10a19499-3f0d-4aa5-8f6e-1444913be029/public_url">View on Credly ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact-block" id="contact">
+      <div class="contact-grid">
+        <div class="contact-lead reveal">
+          <h2>Let's <em>work</em> together.</h2>
+          <p>Actively seeking full-time opportunities in data analytics and business intelligence.</p>
+        </div>
+        <div class="contact-info reveal">
+          <div class="contact-row"><span class="lbl">EMAIL</span><a class="val" href="mailto:omhektner@gmail.com">omhektner@gmail.com</a></div>
+          <div class="contact-row"><span class="lbl">PHONE</span><span class="val">(701) 809-4571</span></div>
+          <div class="contact-row"><span class="lbl">GITHUB</span><a class="val" href="https://github.com/ohek54">github.com/ohek54</a></div>
+          <div class="contact-row"><span class="lbl">LINKEDIN</span><a class="val" href="https://www.linkedin.com/in/owen-hektner-103ab41a9/">linkedin.com/in/owen-hektner-103ab41a9</a></div>
+          <div class="contact-row"><span class="lbl">LOCATION</span><span class="val">North Dakota, USA</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      reveals.forEach((el) => io.observe(el));
+
+      // Mark thumbs whose images are still loading; if they 404 onerror runs;
+      // for the initial no-image state, mark them no-media so the fallback shows immediately.
+      document.querySelectorAll('.proj-thumb-img').forEach((img) => {
+        if (img.complete && img.naturalWidth === 0) {
+          img.style.display = 'none';
+          img.parentElement.classList.add('no-media');
+        }
+      });
+    })();
+
+    // Lightbox for project View links
+    (function () {
+      const overlay = document.createElement('div');
+      overlay.id = 'lb-overlay';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:none;overflow-y:auto;padding:40px 20px;';
+      overlay.innerHTML = '<button id="lb-close" aria-label="Close" style="position:fixed;top:20px;right:24px;background:transparent;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1;z-index:2;">×</button><div id="lb-inner" style="max-width:1100px;margin:0 auto;"><h3 id="lb-title" style="color:#fff;font-family:inherit;font-weight:600;margin:0 0 24px;font-size:22px;"></h3><div id="lb-images" style="display:flex;flex-direction:column;gap:20px;"></div></div>';
+      document.body.appendChild(overlay);
+
+      const close = () => { overlay.style.display = 'none'; document.body.style.overflow = ''; };
+      overlay.querySelector('#lb-close').addEventListener('click', close);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.style.display === 'block') close(); });
+
+      document.querySelectorAll('a[data-lightbox]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const imgs = link.getAttribute('data-lightbox').split(',');
+          const title = link.getAttribute('data-lightbox-title') || '';
+          overlay.querySelector('#lb-title').textContent = title;
+          const container = overlay.querySelector('#lb-images');
+          container.innerHTML = imgs.map((src) => '<div style="border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;background:#111;"><img src="' + src.trim() + '" alt="" style="width:100%;height:auto;display:block;"></div>').join('');
+          overlay.scrollTop = 0;
+          overlay.style.display = 'block';
+          document.body.style.overflow = 'hidden';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
