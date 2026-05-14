@@ -32,8 +32,3 @@ git push
 
 GitHub Pages deploys automatically within ~60 seconds.
 
-## Adding a custom domain
-
-1. Add A records at your registrar pointing to GitHub's IPs (`185.199.108–111.153`)
-2. Add a CNAME record: `www` → `ohek54.github.io`
-3. Set the custom domain in repo Settings → Pages
